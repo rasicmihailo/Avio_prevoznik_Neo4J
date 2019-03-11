@@ -1,0 +1,50 @@
+CREATE (n:User {id:'10', ime:'Jovan', prezime:'Stojanovic', korisnicko:'jovan', sifra:'jovan', a: '1' }) return n   //a = 1 => admin
+CREATE (n:User {id:'11', ime:'Milan', prezime:'Jovanovic', korisnicko:'milan', sifra:'milan', a: '0' }) return n   //a = 0 => radnik
+CREATE (n:User {id:'12', ime:'Milica', prezime:'Radic', korisnicko:'milica', sifra:'milica', a: '0' }) return n  
+
+CREATE (n:Aerodrom {id:'13', mesto:'Nis', kapacitet:'50000'}) return n
+CREATE (n:Aerodrom {id:'14', mesto:'Madrid', kapacitet:'150000'}) return n
+CREATE (n:Aerodrom {id:'15', mesto:'Berlin', kapacitet:'500000'}) return n
+CREATE (n:Aerodrom {id:'16', mesto:'New York', kapacitet:'1000000'}) return n
+CREATE (n:Aerodrom {id:'17', mesto:'Moscow', kapacitet:'700000'}) return n
+
+CREATE (n:Avion {id:'18', marka:'Boing 747', brojsedista:'250', godinaproizvodnje:'2008'}) return n
+CREATE (n:Avion {id:'19', marka:'Vicker 808', brojsedista:'300', godinaproizvodnje:'2015'}) return n
+CREATE (n:Avion {id:'20', marka:'Lockheed 1049', brojsedista:'400', godinaproizvodnje:'2017'}) return n
+
+
+
+MATCH (a2: Aerodrom),(a1: Avion) WHERE a1.id = '18' AND a2.id = '13' 
+CREATE (a1)-[pr: GARAZIRAN_NA]->(a2)
+RETURN a2
+
+MATCH (a2: Aerodrom),(a1: Avion) WHERE a1.id = '19' AND a2.id = '15' 
+CREATE (a1)-[pr: GARAZIRAN_NA]->(a2)
+RETURN a2
+
+MATCH (a2: Aerodrom),(a1: Avion) WHERE a1.id = '20' AND a2.id = '16' 
+CREATE (a1)-[pr: GARAZIRAN_NA]->(a2)
+RETURN a2
+
+
+CREATE (n:Let {id:'21', datumpolaska:'11.1.2019', vremepolaska:'12:30', vremeletenja:'4', brojsedista:'250', osnovnacena:'500'}) return n
+CREATE (n:Let {id:'22', datumpolaska: '9.1.2019', vremepolaska:'15:30', vremeletenja:'3', brojsedista:'300', osnovnacena:'390'}) return n
+CREATE (n:Let {id:'23', datumpolaska:'11.1.2019', vremepolaska:'16:00', vremeletenja:'6', brojsedista:'300', osnovnacena:'700'}) return n
+CREATE (n:Let {id:'24', datumpolaska:'10.2.2019', vremepolaska:'19:30', vremeletenja:'9', brojsedista:'400', osnovnacena:'1200'}) return n
+
+MATCH (l:Let), (a:Aerodrom) WHERE l.id = '21' AND a.id = '13' CREATE (a)<-[r:POLAZI_OD]-(l) return a
+MATCH (l:Let), (a:Aerodrom) WHERE l.id = '22' AND a.id = '14' CREATE (a)<-[r:POLAZI_OD]-(l) return a
+MATCH (l:Let), (a:Aerodrom) WHERE l.id = '23' AND a.id = '15' CREATE (a)<-[r:POLAZI_OD]-(l) return a
+MATCH (l:Let), (a:Aerodrom) WHERE l.id = '24' AND a.id = '16' CREATE (a)<-[r:POLAZI_OD]-(l) return a
+
+MATCH (l:Let), (a:Aerodrom) WHERE l.id = '21' AND a.id = '15' CREATE (a)<-[r:SLECE_NA]-(l) return a
+MATCH (l:Let), (a:Aerodrom) WHERE l.id = '23' AND a.id = '14' CREATE (a)<-[r:SLECE_NA]-(l) return a
+MATCH (l:Let), (a:Aerodrom) WHERE l.id = '22' AND a.id = '16' CREATE (a)<-[r:SLECE_NA]-(l) return a
+MATCH (l:Let), (a:Aerodrom) WHERE l.id = '24' AND a.id = '17' CREATE (a)<-[r:SLECE_NA]-(l) return a
+
+MATCH (l:Let), (a:Avion) WHERE l.id = '21' AND a.id = '18' CREATE (a)<-[r:LET_AVION]-(l) return a
+MATCH (l:Let), (a:Avion) WHERE l.id = '22' AND a.id = '19' CREATE (a)<-[r:LET_AVION]-(l) return a
+MATCH (l:Let), (a:Avion) WHERE l.id = '23' AND a.id = '19' CREATE (a)<-[r:LET_AVION]-(l) return a
+MATCH (l:Let), (a:Avion) WHERE l.id = '24' AND a.id = '20' CREATE (a)<-[r:LET_AVION]-(l) return a
+
+
